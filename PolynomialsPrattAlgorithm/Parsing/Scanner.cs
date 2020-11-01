@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
-using static PolynomialsPrattAlgorithm.TokenType;
+using static PolynomialsPrattAlgorithm.Parsing.TokenType;
 
-namespace PolynomialsPrattAlgorithm
+namespace PolynomialsPrattAlgorithm.Parsing
 {
     public enum TokenType
     {
-        NUMBER, STAR, PLUS, MINUS, SLASH, VAR, LEFT_PAREN, RIGHT_PAREN, POWER, EOF
+        NUMBER, STAR, PLUS, MINUS, SLASH, VAR, LEFT_PAREN, RIGHT_PAREN, POWER, EOF, EQUAL, COMMA
     }
 
     public class Token
@@ -82,6 +82,12 @@ namespace PolynomialsPrattAlgorithm
                     break;
                 case '^':
                     AddToken(POWER);
+                    break;
+                case ',':
+                    AddToken(COMMA);
+                    break;
+                case '=':
+                    AddToken(EQUAL);
                     break;
                 default:
                     if (IsDigit(c))

@@ -1,46 +1,10 @@
 ﻿using PolynomialsPrattAlgorithm.Expressions;
-using System;
+using PolynomialsPrattAlgorithm.Parselets;
 using System.Collections.Generic;
-using static PolynomialsPrattAlgorithm.TokenType;
+using static PolynomialsPrattAlgorithm.Parsing.TokenType;
 
-namespace PolynomialsPrattAlgorithm
+namespace PolynomialsPrattAlgorithm.Parsing
 {
-    public class NegateParselet : IPrefixParselet
-    {
-        public IExpr Parse(Parser parser, Token token)
-        {
-            var operand = parser.ParseExpression();
-
-            return new NegateExpr(operand);
-        }
-    }
-
-    public class GroupParselet : IPrefixParselet
-    {
-        public IExpr Parse(Parser parser, Token token)
-        {
-            var expr = parser.ParseExpression();
-            parser.Consume(RIGHT_PAREN, "Expecting ')' after expression.");
-            return expr;
-        }
-    }
-
-    public class ParseError : Exception
-    {
-        public ParseError(string message) : base(message)
-        {
-        }
-    }
-
-    public class PolynomialsParser : Parser
-    {
-        public PolynomialsParser(List<Token> tokens) : base(tokens)
-        {
-            Register(MINUS, new NegateParselet());
-            Register(RIGHT_PAREN, new GroupParselet());
-        }
-    }
-
     public class Parser
     {
         private readonly List<Token> _tokens;
@@ -131,7 +95,7 @@ namespace PolynomialsPrattAlgorithm
 
         private ParseError Error(Token token, string message)
         {
-            return new ParseError(message);
+            return new ParseError($"Error a token {token.Type}: {message}");
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using PolynomialsPrattAlgorithm.Expressions;
+using PolynomialsPrattAlgorithm.Parsing;
 
-namespace PolynomialsPrattAlgorithm
+namespace PolynomialsPrattAlgorithm.Parselets
 {
     public interface IPrefixParselet
     {

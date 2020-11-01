@@ -18,4 +18,21 @@ namespace PolynomialsPrattAlgorithm.Expressions
             return $"Product({_left},{_right})";
         }
     }
+
+    public class DivideExpr : IExpr
+    {
+        private readonly IExpr _left;
+        private readonly IExpr _right;
+        public DivideExpr(IExpr left, IExpr right)
+        {
+            _left = left;
+            _right = right;
+        }
+        public double Eval(Dictionary<char, double> variablesValue) => _left.Eval(variablesValue) / _right.Eval(variablesValue);
+
+        public override string ToString()
+        {
+            return $"Divide({_left},{_right})";
+        }
+    }
 }
