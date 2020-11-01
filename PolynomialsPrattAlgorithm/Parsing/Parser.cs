@@ -39,6 +39,37 @@ namespace PolynomialsPrattAlgorithm.Parsing
             return null;
         }
 
+        public PolynomialEvaluation ParsePolynomialEvaluation()
+        {
+            var expr = ParseExpression();
+            var result = new PolynomialEvaluation(expr);
+
+            while (!IsAtEnd())
+            {
+                Consume(COMMA, "Expect ','.");
+                var assignStmt = Assign();
+                result.AddVariableValue(assignStmt.Key, assignStmt.Value);
+            }
+
+            return result;
+        }
+
+        private KeyValuePair<char, double> Assign()
+        {
+            var name = ParseExpression() as VariableExpr;
+
+            if (name is null)
+                throw new ParseError("Expect variable name.");
+
+            Consume(EQUAL, "Expect '=' after variable name.");
+            var value = ParseExpression() as ConstExpr;
+
+            if (value is null)
+                throw new ParseError("Expect numeric value.");
+
+            return new KeyValuePair<char, double>(name.Name, value.Value);
+        }
+
         public IExpr ParseExpression(int precedence = 0)
         {
             var token = Advance();

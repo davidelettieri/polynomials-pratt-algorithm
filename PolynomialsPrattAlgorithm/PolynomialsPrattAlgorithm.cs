@@ -9,15 +9,28 @@ namespace PolynomialsPrattAlgorithm
     {
         public static void Main()
         {
-            var source = "(x+y)^2,x=2,y=1";
+            Console.WriteLine("Test the polynomial evaluation");
+            Console.WriteLine("Insert a polynomial and the variable values separated with a comma");
+            Console.WriteLine("Eg. x+y^2,x=1,y=2");
 
-            var scanner = new Scanner(source);
+            while (true)
+            {
+                Console.Write("> ");
+                var source = Console.ReadLine();
 
-            var tokens = scanner.ScanTokens();
-
-            var parser = new PolynomialsParser(tokens);
-            var expr = parser.ParseExpression();
-            var result = expr.Eval(new Dictionary<char, double>() { { 'x', 1 }, { 'y', 2 } });
+                if (string.IsNullOrWhiteSpace(source))
+                {
+                    break;
+                }
+                var scanner = new Scanner(source);
+                var tokens = scanner.ScanTokens();
+                var parser = new PolynomialsParser(tokens);
+                var expr = parser.ParsePolynomialEvaluation();
+                Console.WriteLine("> Result is: {0}", expr.Eval());
+                Console.WriteLine();
+                Console.WriteLine("Try again or Ctrl+c to exit");
+            }
+            Console.WriteLine("Goodbye!");
         }
     }
 }

@@ -5,23 +5,23 @@ namespace PolynomialsPrattAlgorithm.Expressions
 {
     public class VariableExpr : IExpr
     {
-        private readonly char _var;
+        public char Name { get; }
 
         public VariableExpr(char variable)
         {
-            _var = variable;
+            Name = variable;
         }
         public double Eval(Dictionary<char, double> variablesValue)
         {
-            if (variablesValue.TryGetValue(_var, out var value))
+            if (variablesValue.TryGetValue(Name, out var value))
                 return value;
 
-            throw new InvalidOperationException($"Value for variable {_var} is not present in dictionary {nameof(variablesValue)}");
+            throw new InvalidOperationException($"Value for variable {Name} is not present in dictionary {nameof(variablesValue)}");
         }
 
         public override string ToString()
         {
-            return $"{_var}";
+            return $"{Name}";
         }
     }
 }

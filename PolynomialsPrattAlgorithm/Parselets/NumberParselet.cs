@@ -7,7 +7,7 @@ namespace PolynomialsPrattAlgorithm.Parselets
     {
         public IExpr Parse(Parser parser, Token token)
         {
-            return new ConstNode((double)token.Value);
+            return new ConstExpr((double)token.Value);
         }
     }
 }
