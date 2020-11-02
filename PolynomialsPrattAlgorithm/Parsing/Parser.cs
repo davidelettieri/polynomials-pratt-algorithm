@@ -79,8 +79,7 @@ namespace PolynomialsPrattAlgorithm.Parsing
             var token = Advance();
             var prefix = GetPrefixParselet(token.Type);
 
-            // TODO Fix error message
-            if (prefix is null) throw new ParseError("Could not parse \"\"");
+            if (prefix is null) throw new ParseError($"Could not parse \"{token.Lexeme}\" at column {token.Column}");
 
             var left = prefix.Parse(this, token);
 
@@ -130,7 +129,7 @@ namespace PolynomialsPrattAlgorithm.Parsing
 
         private ParseError Error(Token token, string message)
         {
-            return new ParseError($"Error a token {token.Type}: {message}");
+            return new ParseError($"Error at token {token.Type}: {message}");
         }
     }
 }

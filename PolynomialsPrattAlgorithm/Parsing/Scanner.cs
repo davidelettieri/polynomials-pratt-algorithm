@@ -62,6 +62,10 @@ namespace PolynomialsPrattAlgorithm.Parsing
                 case '=':
                     AddToken(EQUAL);
                     break;
+                case ' ':
+                case '\t':
+                case '\n':
+                    break;
                 default:
                     if (IsDigit(c))
                     {

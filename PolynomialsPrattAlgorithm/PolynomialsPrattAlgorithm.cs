@@ -22,11 +22,19 @@ namespace PolynomialsPrattAlgorithm
                 {
                     break;
                 }
-                var scanner = new Scanner(source);
-                var tokens = scanner.ScanTokens();
-                var parser = new Parser(tokens);
-                var expr = parser.ParsePolynomialEvaluation();
-                Console.WriteLine("> Result is: {0}", expr.Eval());
+                try
+                {
+                    var scanner = new Scanner(source);
+                    var tokens = scanner.ScanTokens();
+                    var parser = new Parser(tokens);
+                    var expr = parser.ParsePolynomialEvaluation();
+                    Console.WriteLine("> Result is: {0}", expr.Eval());
+                }
+                catch (ParseError per)
+                {
+                    Console.WriteLine("> {0}", per.Message);
+                }
+
                 Console.WriteLine();
                 Console.WriteLine("Try again or Ctrl+c to exit");
             }
