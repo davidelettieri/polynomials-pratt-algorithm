@@ -4,33 +4,6 @@ using static PolynomialsPrattAlgorithm.Parsing.TokenType;
 
 namespace PolynomialsPrattAlgorithm.Parsing
 {
-    public enum TokenType
-    {
-        NUMBER, STAR, PLUS, MINUS, SLASH, VAR, LEFT_PAREN, RIGHT_PAREN, POWER, EOF, EQUAL, COMMA
-    }
-
-    public class Token
-    {
-        public TokenType Type { get; }
-        public object Value { get; }
-
-        public Token(TokenType type, object value)
-        {
-            Type = type;
-            Value = value;
-        }
-
-        public override string ToString()
-        {
-            if (Value is null)
-            {
-                return string.Format("Token {0}", Type);
-            }
-
-            return string.Format("Token {0}, value {1}", Type, Value);
-        }
-    }
-
     public class Scanner
     {
         private readonly string _source;
@@ -142,7 +115,8 @@ namespace PolynomialsPrattAlgorithm.Parsing
 
         private void AddToken(TokenType type, object value = null)
         {
-            _tokens.Add(new Token(type, value));
+            var lexeme = _source.Substring(_start, _current - _start);
+            _tokens.Add(new Token(type, _start, lexeme, value));
         }
 
         private bool IsAtEnd() => _current >= _source.Length;
