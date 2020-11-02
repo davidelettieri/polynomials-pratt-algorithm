@@ -14,14 +14,18 @@ namespace PolynomialsPrattAlgorithm.Parsing
 
         public Parser(List<Token> tokens)
         {
+            _prefixParselets.Add(NUMBER, new NumberParselet());
+            _prefixParselets.Add(VAR, new VarParselet());
+            _prefixParselets.Add(LEFT_PAREN, new GroupParselet());
+            _prefixParselets.Add(MINUS, new NegateParselet());
+            _infixParselet.Add(PLUS, new BinaryOperatorParselet(Precedence.SUM, Associativity.Left));
+            _infixParselet.Add(MINUS, new BinaryOperatorParselet(Precedence.SUM, Associativity.Left));
+            _infixParselet.Add(STAR, new BinaryOperatorParselet(Precedence.PRODUCT, Associativity.Left));
+            _infixParselet.Add(SLASH, new BinaryOperatorParselet(Precedence.PRODUCT, Associativity.Left));
+            _infixParselet.Add(POWER, new BinaryOperatorParselet(Precedence.EXPONENT, Associativity.Right));
+
             _tokens = tokens;
         }
-
-        public void Register(TokenType token, IPrefixParselet parselet)
-            => _prefixParselets.Add(token, parselet);
-
-        public void Register(TokenType token, IInfixParselet parselet)
-            => _infixParselet.Add(token, parselet);
 
         private IPrefixParselet GetPrefixParselet(TokenType token)
         {

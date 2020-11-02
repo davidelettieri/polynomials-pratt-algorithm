@@ -1,7 +1,7 @@
 ﻿using PolynomialsPrattAlgorithm.Expressions;
 using System.Collections.Generic;
 
-namespace PolynomialsPrattAlgorithm
+namespace PolynomialsPrattAlgorithm.Parsing
 {
     public class PolynomialEvaluation
     {

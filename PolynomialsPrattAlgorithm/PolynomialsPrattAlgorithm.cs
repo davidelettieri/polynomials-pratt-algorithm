@@ -24,7 +24,7 @@ namespace PolynomialsPrattAlgorithm
                 }
                 var scanner = new Scanner(source);
                 var tokens = scanner.ScanTokens();
-                var parser = new PolynomialsParser(tokens);
+                var parser = new Parser(tokens);
                 var expr = parser.ParsePolynomialEvaluation();
                 Console.WriteLine("> Result is: {0}", expr.Eval());
                 Console.WriteLine();
