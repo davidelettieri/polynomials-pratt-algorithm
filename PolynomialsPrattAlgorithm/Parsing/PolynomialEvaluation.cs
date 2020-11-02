@@ -5,16 +5,16 @@ namespace PolynomialsPrattAlgorithm.Parsing
 {
     public class PolynomialEvaluation
     {
-        private readonly IExpr _polynomial;
-        private readonly Dictionary<char, double> _variableValues = new Dictionary<char, double>();
+        public IExpr Polynomial { get; }
+        public Dictionary<char, double> VariableValues { get; }
 
         public PolynomialEvaluation(IExpr polynomial)
         {
-            _polynomial = polynomial;
+            Polynomial = polynomial;
         }
 
-        public void AddVariableValue(char name, double value) => _variableValues[name] = value;
+        public void AddVariableValue(char name, double value) => VariableValues[name] = value;
 
-        public double Eval() => _polynomial.Eval(_variableValues);
+        public double Eval() => Polynomial.Eval(VariableValues);
     }
 }
