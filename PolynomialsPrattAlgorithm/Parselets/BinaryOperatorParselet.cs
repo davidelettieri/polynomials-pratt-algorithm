@@ -23,15 +23,41 @@ namespace PolynomialsPrattAlgorithm.Parselets
 
             return token.Type switch
             {
+                VAR => new ProductExpr(left, right),
+                NUMBER => new ProductExpr(left, right),
                 PLUS => new AddExpr(left, right),
                 MINUS => new SubtractExpr(left, right),
                 STAR => new ProductExpr(left, right),
                 SLASH => new DivideExpr(left, right),
                 POWER => new PowerExpr(left, right),
-                _ => throw new ParseError("Expect one of '*','/','+','-','^'")
+                _ => throw new ParseError("Expect one of '*','/','+','-','^', a number or a variable")
             };
         }
+    }
 
+        public class ImplicitProductParselet : IInfixParselet
+    {
+        private readonly int _precedence;
+        private readonly Associativity _associativity;
+        public ImplicitProductParselet(int precedence, Associativity associativity)
+        {
+            _precedence = precedence;
+            _associativity = associativity;
+        }
 
+        public int GetPrecedence() => _precedence;
+
+        public IExpr Parse(Parser parser, IExpr left, Token token)
+        {
+            var parsePrecedence = _precedence - (_associativity == Associativity.Right ? -1 : 0);
+            var right = parser.ParseExpression(parsePrecedence);
+
+            return token.Type switch
+            {
+                VAR => new ProductExpr(left, right),
+                NUMBER => new ProductExpr(left, right),
+                _ => throw new ParseError("Expect a number or a variable")
+            };
+        }
     }
 }

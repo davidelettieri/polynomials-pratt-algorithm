@@ -18,6 +18,8 @@ namespace PolynomialsPrattAlgorithm.Parsing
             _prefixParselets.Add(VAR, new VarParselet());
             _prefixParselets.Add(LEFT_PAREN, new GroupParselet());
             _prefixParselets.Add(MINUS, new NegateParselet());
+            _infixParselet.Add(VAR, new ImplicitProductParselet(Precedence.IMPLICIT_PRODUCT, Associativity.Left));
+            _infixParselet.Add(NUMBER, new ImplicitProductParselet(Precedence.IMPLICIT_PRODUCT, Associativity.Left));
             _infixParselet.Add(PLUS, new BinaryOperatorParselet(Precedence.SUM, Associativity.Left));
             _infixParselet.Add(MINUS, new BinaryOperatorParselet(Precedence.SUM, Associativity.Left));
             _infixParselet.Add(STAR, new BinaryOperatorParselet(Precedence.PRODUCT, Associativity.Left));
