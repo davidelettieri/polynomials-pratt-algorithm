@@ -10,14 +10,14 @@ namespace PolynomialsPrattAlgorithm.Tests
     public class ParserTests
     {
         [Theory(DisplayName = "Parsing simple polynomials")]
-        [InlineData("(xy)", typeof(GroupExpr))]
-        // [InlineData("x+y", typeof(AddExpr))]
-        // [InlineData("x*y", typeof(ProductExpr))]
-        // [InlineData("x-y", typeof(SubtractExpr))]
-        // [InlineData("x^y", typeof(PowerExpr))]
-        // [InlineData("5", typeof(ConstExpr))]
-        // [InlineData("x", typeof(VariableExpr))]
-        // [InlineData("xy", typeof(ProductExpr))]
+        [InlineData("(xy)", typeof(ProductExpr))]
+        [InlineData("x+y", typeof(AddExpr))]
+        [InlineData("x*y", typeof(ProductExpr))]
+        [InlineData("x-y", typeof(SubtractExpr))]
+        [InlineData("x^y", typeof(PowerExpr))]
+        [InlineData("5", typeof(ConstExpr))]
+        [InlineData("x", typeof(VariableExpr))]
+        [InlineData("xy", typeof(ProductExpr))]
         public void Test(string source, Type type)
         {
             // Arrange

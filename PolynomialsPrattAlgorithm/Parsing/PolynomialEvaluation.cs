@@ -11,6 +11,7 @@ namespace PolynomialsPrattAlgorithm.Parsing
         public PolynomialEvaluation(IExpr polynomial)
         {
             Polynomial = polynomial;
+            VariableValues = new Dictionary<char, double>();
         }
 
         public void AddVariableValue(char name, double value) => VariableValues[name] = value;
