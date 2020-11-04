@@ -6,6 +6,6 @@ namespace PolynomialsPrattAlgorithm.Parselets
     public interface IInfixParselet
     {
         IExpr Parse(Parser parser, IExpr left, Token token);
-        int GetPrecedence();
+        int Precedence { get; }
     }
 }

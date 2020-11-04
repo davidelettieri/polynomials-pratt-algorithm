@@ -6,17 +6,15 @@ namespace PolynomialsPrattAlgorithm.Parselets
 {
     public class ImplicitProductParselet : IInfixParselet
     {
-        private readonly int _precedence;
+        public int Precedence { get; }
         private readonly Associativity _associativity;
         private readonly VarParselet _varParselet = new VarParselet();
         private readonly NumberParselet _numberParselet = new NumberParselet();
         public ImplicitProductParselet(int precedence, Associativity associativity)
         {
-            _precedence = precedence;
+            Precedence = precedence;
             _associativity = associativity;
         }
-
-        public int GetPrecedence() => _precedence;
 
         public IExpr Parse(Parser parser, IExpr left, Token token)
         {

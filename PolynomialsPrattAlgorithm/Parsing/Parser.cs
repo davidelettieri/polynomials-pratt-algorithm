@@ -85,7 +85,7 @@ namespace PolynomialsPrattAlgorithm.Parsing
 
             var left = prefix.Parse(this, token);
 
-            while (precedence < GetPrecedence())
+            while (precedence < PeekPrecedence())
             {
                 token = Advance();
 
@@ -97,11 +97,11 @@ namespace PolynomialsPrattAlgorithm.Parsing
         }
 
 
-        private int GetPrecedence()
+        private int PeekPrecedence()
         {
             var next = Peek();
             var parser = GetInfixParselet(next.Type);
-            return parser?.GetPrecedence() ?? 0;
+            return parser?.Precedence ?? 0;
         }
 
         public Token Consume(TokenType type, string message)
