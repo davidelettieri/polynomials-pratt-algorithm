@@ -78,18 +78,29 @@ namespace PolynomialsPrattAlgorithm.Parsing
 
         public IExpr ParseExpression(int precedence = 0)
         {
+            // STEP 1: Parse looks at the first symbol and assumes it is an operator
+            // with no argument on its left side
             var token = Advance();
             var prefix = GetPrefixDenotation(token.Type);
 
             if (prefix is null) throw new ParseError($"Could not parse \"{token.Lexeme}\" at column {token.Column}");
 
+            // STEP 2: Parse execute the denotation associated with this symbol
             var left = prefix.Parse(this, token);
+            // After running the current denotation we parsed the expression and we are
+            // a the next symbol
 
+            // STEP 3: here is were we decide if the current expression is an argument of the
+            // next operator or if we should return it
             while (precedence < PeekPrecedence())
             {
+                // STEP 4: if the prefix expression is an argument of the following symbol
+                // we pass it to the infix denotation
                 token = Advance();
 
                 var infix = GetInfixDenotation(token.Type);
+                if (infix is null) throw new ParseError($"Could not parse \"{token.Lexeme}\" at column {token.Column}");
+                
                 left = infix.Parse(this, left, token);
             }
 
