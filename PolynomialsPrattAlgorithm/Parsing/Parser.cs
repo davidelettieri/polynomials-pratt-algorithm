@@ -1,5 +1,5 @@
-﻿using PolynomialsPrattAlgorithm.Expressions;
-using PolynomialsPrattAlgorithm.Parselets;
+﻿using PolynomialsPrattAlgorithm.Denotations;
+using PolynomialsPrattAlgorithm.Expressions;
 using System.Collections.Generic;
 using static PolynomialsPrattAlgorithm.Parsing.TokenType;
 
@@ -9,37 +9,37 @@ namespace PolynomialsPrattAlgorithm.Parsing
     {
         private readonly List<Token> _tokens;
         private int _current = 0;
-        private readonly Dictionary<TokenType, IPrefixParselet> _prefixParselets = new Dictionary<TokenType, IPrefixParselet>();
-        private readonly Dictionary<TokenType, IInfixParselet> _infixParselet = new Dictionary<TokenType, IInfixParselet>();
+        private readonly Dictionary<TokenType, IPrefixDenotation> _prefixDenotations = new Dictionary<TokenType, IPrefixDenotation>();
+        private readonly Dictionary<TokenType, IInfixDenotation> _infixDenotation = new Dictionary<TokenType, IInfixDenotation>();
 
         public Parser(List<Token> tokens)
         {
-            _prefixParselets.Add(NUMBER, new NumberParselet());
-            _prefixParselets.Add(VAR, new VarParselet());
-            _prefixParselets.Add(LEFT_PAREN, new GroupParselet());
-            _prefixParselets.Add(MINUS, new NegateParselet());
-            _infixParselet.Add(VAR, new ImplicitProductParselet(Precedence.PRODUCT, Associativity.Left));
-            _infixParselet.Add(NUMBER, new ImplicitProductParselet(Precedence.PRODUCT, Associativity.Left));
-            _infixParselet.Add(PLUS, new BinaryOperatorParselet(Precedence.SUM, Associativity.Left));
-            _infixParselet.Add(MINUS, new BinaryOperatorParselet(Precedence.SUM, Associativity.Left));
-            _infixParselet.Add(STAR, new BinaryOperatorParselet(Precedence.PRODUCT, Associativity.Left));
-            _infixParselet.Add(SLASH, new BinaryOperatorParselet(Precedence.PRODUCT, Associativity.Left));
-            _infixParselet.Add(POWER, new BinaryOperatorParselet(Precedence.EXPONENT, Associativity.Right));
+            _prefixDenotations.Add(NUMBER, new NumberDenotation());
+            _prefixDenotations.Add(VAR, new VarDenotation());
+            _prefixDenotations.Add(LEFT_PAREN, new GroupDenotation());
+            _prefixDenotations.Add(MINUS, new NegateDenotation());
+            _infixDenotation.Add(VAR, new ImplicitProductDenotation(Precedence.PRODUCT, Precedence.PRODUCT));
+            _infixDenotation.Add(NUMBER, new ImplicitProductDenotation(Precedence.PRODUCT, Precedence.PRODUCT));
+            _infixDenotation.Add(PLUS, new BinaryOperatorDenotation(Precedence.SUM, Precedence.SUM));
+            _infixDenotation.Add(MINUS, new BinaryOperatorDenotation(Precedence.SUM, Precedence.SUM));
+            _infixDenotation.Add(STAR, new BinaryOperatorDenotation(Precedence.PRODUCT, Precedence.PRODUCT));
+            _infixDenotation.Add(SLASH, new BinaryOperatorDenotation(Precedence.PRODUCT, Precedence.PRODUCT));
+            _infixDenotation.Add(POWER, new BinaryOperatorDenotation(Precedence.EXPONENT + 1, Precedence.EXPONENT));
 
             _tokens = tokens;
         }
 
-        private IPrefixParselet GetPrefixParselet(TokenType token)
+        private IPrefixDenotation GetPrefixDenotation(TokenType token)
         {
-            if (_prefixParselets.TryGetValue(token, out var value))
+            if (_prefixDenotations.TryGetValue(token, out var value))
                 return value;
 
             return null;
         }
 
-        private IInfixParselet GetInfixParselet(TokenType token)
+        private IInfixDenotation GetInfixDenotation(TokenType token)
         {
-            if (_infixParselet.TryGetValue(token, out var value))
+            if (_infixDenotation.TryGetValue(token, out var value))
                 return value;
 
             return null;
@@ -79,7 +79,7 @@ namespace PolynomialsPrattAlgorithm.Parsing
         public IExpr ParseExpression(int precedence = 0)
         {
             var token = Advance();
-            var prefix = GetPrefixParselet(token.Type);
+            var prefix = GetPrefixDenotation(token.Type);
 
             if (prefix is null) throw new ParseError($"Could not parse \"{token.Lexeme}\" at column {token.Column}");
 
@@ -89,7 +89,7 @@ namespace PolynomialsPrattAlgorithm.Parsing
             {
                 token = Advance();
 
-                var infix = GetInfixParselet(token.Type);
+                var infix = GetInfixDenotation(token.Type);
                 left = infix.Parse(this, left, token);
             }
 
@@ -100,8 +100,8 @@ namespace PolynomialsPrattAlgorithm.Parsing
         private int PeekPrecedence()
         {
             var next = Peek();
-            var parser = GetInfixParselet(next.Type);
-            return parser?.Precedence ?? 0;
+            var parser = GetInfixDenotation(next.Type);
+            return parser?.RightBindingPower ?? 0;
         }
 
         public Token Consume(TokenType type, string message)

@@ -2,22 +2,22 @@
 using PolynomialsPrattAlgorithm.Parsing;
 using static PolynomialsPrattAlgorithm.Parsing.TokenType;
 
-namespace PolynomialsPrattAlgorithm.Parselets
+namespace PolynomialsPrattAlgorithm.Denotations
 {
-    public class BinaryOperatorParselet : IInfixParselet
+    public class BinaryOperatorDenotation : IInfixDenotation
     {
-        public int Precedence { get; }
-        private readonly Associativity _associativity;
-        public BinaryOperatorParselet(int precedence, Associativity associativity)
+        public int RightBindingPower { get; }
+        public int LeftBindingPower { get; }
+
+        public BinaryOperatorDenotation(int bightBindingPower, int leftBindingPower)
         {
-            Precedence = precedence;
-            _associativity = associativity;
+            RightBindingPower = bightBindingPower;
+            LeftBindingPower = leftBindingPower;
         }
 
         public IExpr Parse(Parser parser, IExpr left, Token token)
         {
-            var parsePrecedence = Precedence - (_associativity == Associativity.Right ? -1 : 0);
-            var right = parser.ParseExpression(parsePrecedence);
+            var right = parser.ParseExpression(LeftBindingPower);
 
             return token.Type switch
             {

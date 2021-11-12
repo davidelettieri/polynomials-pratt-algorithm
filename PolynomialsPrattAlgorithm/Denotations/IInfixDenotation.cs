@@ -1,11 +1,12 @@
 ﻿using PolynomialsPrattAlgorithm.Expressions;
 using PolynomialsPrattAlgorithm.Parsing;
 
-namespace PolynomialsPrattAlgorithm.Parselets
+namespace PolynomialsPrattAlgorithm.Denotations
 {
-    public interface IInfixParselet
+    public interface IInfixDenotation
     {
         IExpr Parse(Parser parser, IExpr left, Token token);
-        int Precedence { get; }
+        int RightBindingPower { get; }
+        int LeftBindingPower { get; }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using PolynomialsPrattAlgorithm.Expressions;
 using PolynomialsPrattAlgorithm.Parsing;
 
-namespace PolynomialsPrattAlgorithm.Parselets
+namespace PolynomialsPrattAlgorithm.Denotations
 {
-    public class VarParselet : IPrefixParselet
+    public class VarDenotation : IPrefixDenotation
     {
         public IExpr Parse(Parser parser, Token token)
         {

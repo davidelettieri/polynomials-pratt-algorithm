@@ -2,9 +2,9 @@
 using static PolynomialsPrattAlgorithm.Parsing.TokenType;
 using PolynomialsPrattAlgorithm.Parsing;
 
-namespace PolynomialsPrattAlgorithm.Parselets
+namespace PolynomialsPrattAlgorithm.Denotations
 {
-    public class GroupParselet : IPrefixParselet
+    public class GroupDenotation : IPrefixDenotation
     {
         public IExpr Parse(Parser parser, Token token)
         {

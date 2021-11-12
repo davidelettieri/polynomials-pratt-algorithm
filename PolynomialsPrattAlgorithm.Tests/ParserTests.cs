@@ -54,5 +54,23 @@ namespace PolynomialsPrattAlgorithm.Tests
             Assert.Equal(expected, result);
         }
 
+        [Theory(DisplayName = "Power is right associative")]
+        [InlineData("2^3^4", 2.4178516392292583E+24)]
+        [InlineData("2^3^2", 512)]
+        public void Test3(string source, double expected)
+        {
+            // Arrange
+            var scanner = new Scanner(source);
+            var tokens = scanner.ScanTokens();
+            var parser = new Parser(tokens);
+            var polynomial = parser.ParsePolynomialEvaluation();
+
+            // Act
+            var result = polynomial.Eval();
+
+            // Assert
+            Assert.Equal(expected, result);
+        }
+
     }
 }
